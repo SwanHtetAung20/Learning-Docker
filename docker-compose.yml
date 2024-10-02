@@ -1,0 +1,31 @@
+services:
+  postgres:
+    container_name: postgres-sql-test
+    image: postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: demo_test
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres:/var/lib/postgres/data
+    networks:
+      - docker-test-network
+  spring-boot-app:
+    container_name: docker-test
+    image: spring-docker/test
+    ports:
+      - "8088:8080"
+    networks:
+      - docker-test-network
+    depends_on:
+      - postgres
+volumes:
+  postgres:
+
+networks:
+  docker-test-network:
+    driver: bridge
+
+
